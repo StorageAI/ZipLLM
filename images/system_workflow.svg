@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="350" viewBox="0 0 900 350">
+  <style>
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      fill: #344d85;
+    }
+    .subtitle {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .step {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="900" height="350" fill="#f8f9fa" rx="10" ry="10" />
+  
+  <!-- System Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">ZipLLM System Workflow</text>
+  
+  <!-- Input Models -->
+  <rect x="20" y="60" width="160" height="220" fill="#eee" stroke="#aaa" stroke-width="2" rx="5" ry="5" />
+  <text x="100" y="85" text-anchor="middle" class="subtitle">Input LLMs</text>
+  
+  <!-- Model 1 -->
+  <rect x="40" y="100" width="120" height="40" fill="#e3f2fd" stroke="#4a6baf" stroke-width="2" rx="5" ry="5" />
+  <text x="100" y="125" text-anchor="middle">Model A1</text>
+  
+  <!-- Model 2 -->
+  <rect x="40" y="150" width="120" height="40" fill="#e3f2fd" stroke="#4a6baf" stroke-width="2" rx="5" ry="5" />
+  <text x="100" y="175" text-anchor="middle">Model A2</text>
+  
+  <!-- Model 3 -->
+  <rect x="40" y="200" width="120" height="40" fill="#ffebee" stroke="#e57373" stroke-width="2" rx="5" ry="5" />
+  <text x="100" y="225" text-anchor="middle">Model B</text>
+  
+  <!-- File Deduplication -->
+  <rect x="220" y="140" width="140" height="60" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" rx="5" ry="5" />
+  <text x="290" y="165" text-anchor="middle" class="step">1. File Deduplication</text>
+  <text x="290" y="185" text-anchor="middle" font-size="12px">Hash-based</text>
+  
+  <!-- Arrow to File Deduplication -->
+  <line x1="180" y1="170" x2="220" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Tensor-level Deduplication -->
+  <rect x="400" y="140" width="140" height="60" fill="#e8f5e9" stroke="#4caf50" stroke-width="2" rx="5" ry="5" />
+  <text x="470" y="165" text-anchor="middle" class="step">2. Tensor-level</text>
+  <text x="470" y="185" text-anchor="middle" font-size="12px">Deduplication</text>
+  
+  <!-- Arrow to Tensor Deduplication -->
+  <line x1="360" y1="170" x2="400" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- LLM Clustering -->
+  <rect x="400" y="60" width="140" height="60" fill="#fff8e1" stroke="#ffa000" stroke-width="2" rx="5" ry="5" />
+  <text x="470" y="85" text-anchor="middle" class="step">3. LLM Clustering</text>
+  <text x="470" y="105" text-anchor="middle" font-size="12px">Bit Distance Metric</text>
+  
+  <!-- Arrow from Tensor Deduplication to LLM Clustering -->
+  <line x1="470" y1="140" x2="470" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- BitX Compression -->
+  <rect x="580" y="60" width="140" height="60" fill="#fce4ec" stroke="#e91e63" stroke-width="2" rx="5" ry="5" />
+  <text x="650" y="85" text-anchor="middle" class="step">4. BitX Compression</text>
+  <text x="650" y="105" text-anchor="middle" font-size="12px">XOR-based Deltas</text>
+  
+  <!-- Arrow from LLM Clustering to BitX Compression -->
+  <line x1="540" y1="90" x2="580" y2="90" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Efficient Storage -->
+  <rect x="760" y="140" width="140" height="60" fill="#4a6baf" stroke="#344d85" stroke-width="2" rx="5" ry="5" />
+  <text x="830" y="165" text-anchor="middle" class="step" fill="white">Efficient Storage</text>
+  <text x="830" y="185" text-anchor="middle" font-size="12px" fill="white">49.5% Reduction</text>
+  
+  <!-- Arrow from BitX to Efficient Storage -->
+  <polyline points="650,120 650,170 760,170" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+  
+  <!-- Arrow from Tensor Deduplication to Efficient Storage -->
+  <line x1="540" y1="170" x2="760" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Output Visualization -->
+  <rect x="760" y="220" width="120" height="80" fill="#e3f2fd" stroke="#4a6baf" stroke-width="2" rx="5" ry="5" />
+  <text x="820" y="245" text-anchor="middle">Unique Files</text>
+  
+  <rect x="760" y="250" width="50" height="20" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1" />
+  <rect x="760" y="270" width="65" height="20" fill="#e8f5e9" stroke="#4caf50" stroke-width="1" />
+  <rect x="830" y="250" width="30" height="20" fill="#fce4ec" stroke="#e91e63" stroke-width="1" />
+  <rect x="830" y="270" width="40" height="20" fill="#fff8e1" stroke="#ffa000" stroke-width="1" />
+  
+  <!-- Arrow from Efficient Storage to Output -->
+  <line x1="830" y1="200" x2="830" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Arrowhead Marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+</svg> 

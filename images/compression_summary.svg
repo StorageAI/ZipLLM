@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="350" viewBox="0 0 500 350">
+  <style>
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 12px;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      fill: #344d85;
+    }
+    .axis-label {
+      font-size: 12px;
+      text-anchor: middle;
+    }
+    .data-label {
+      font-size: 10px;
+      text-anchor: start;
+      fill: white;
+      font-weight: bold;
+    }
+  </style>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="500" height="350" fill="#f8f9fa" rx="10" ry="10" />
+  
+  <!-- Title -->
+  <text x="250" y="30" text-anchor="middle" class="title">Comparison of Storage Reduction Techniques</text>
+  
+  <!-- Axes -->
+  <line x1="100" y1="280" x2="450" y2="280" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="280" x2="100" y2="50" stroke="#333" stroke-width="1" />
+  
+  <!-- X-axis Labels -->
+  <text x="170" y="300" text-anchor="middle">Hugging Face</text>
+  <text x="250" y="300" text-anchor="middle">ZipNN</text>
+  <text x="330" y="300" text-anchor="middle">FM-Delta</text>
+  <text x="410" y="300" text-anchor="middle">ZipLLM</text>
+  
+  <!-- Y-axis Labels -->
+  <text x="90" y="280" text-anchor="end">0%</text>
+  <text x="90" y="230" text-anchor="end">10%</text>
+  <text x="90" y="180" text-anchor="end">20%</text>
+  <text x="90" y="130" text-anchor="end">30%</text>
+  <text x="90" y="80" text-anchor="end">40%</text>
+  <text x="90" y="50" text-anchor="end">50%</text>
+  
+  <!-- Axis Titles -->
+  <text x="250" y="330" text-anchor="middle" class="axis-label">Storage Reduction Method</text>
+  <text x="20" y="165" text-anchor="middle" class="axis-label" transform="rotate(-90, 20, 165)">Storage Reduction (%)</text>
+  
+  <!-- Bars for Reduction Ratio -->
+  <!-- Hugging Face: ~20% -->
+  <rect x="140" y="200" width="60" height="80" fill="#8c9eff" />
+  <text x="145" y="215" class="data-label">20%</text>
+  
+  <!-- ZipNN: ~25% -->
+  <rect x="220" y="175" width="60" height="105" fill="#536dfe" />
+  <text x="225" y="190" class="data-label">25%</text>
+  
+  <!-- FM-Delta: ~30% -->
+  <rect x="300" y="150" width="60" height="130" fill="#3d5afe" />
+  <text x="305" y="165" class="data-label">30%</text>
+  
+  <!-- ZipLLM: ~49.5% -->
+  <rect x="380" y="70" width="60" height="210" fill="#4a6baf" />
+  <text x="385" y="85" class="data-label">49.5%</text>
+  
+  <!-- Second Y-axis for Throughput -->
+  <line x1="450" y1="280" x2="450" y2="50" stroke="#333" stroke-width="1" stroke-dasharray="4,2" />
+  <text x="460" y="280" text-anchor="start">0 MB/s</text>
+  <text x="460" y="230" text-anchor="start">100 MB/s</text>
+  <text x="460" y="180" text-anchor="start">200 MB/s</text>
+  <text x="460" y="130" text-anchor="start">300 MB/s</text>
+  <text x="460" y="80" text-anchor="start">400 MB/s</text>
+  
+  <!-- Throughput Points -->
+  <circle cx="170" cy="260" r="6" fill="#ff9800" stroke="#fff" stroke-width="1" />
+  <circle cx="250" cy="200" r="6" fill="#ff9800" stroke="#fff" stroke-width="1" />
+  <circle cx="330" cy="240" r="6" fill="#ff9800" stroke="#fff" stroke-width="1" />
+  <circle cx="410" cy="120" r="6" fill="#ff9800" stroke="#fff" stroke-width="1" />
+  
+  <!-- Connect Throughput Points -->
+  <polyline 
+    points="170,260 250,200 330,240 410,120" 
+    fill="none" 
+    stroke="#ff9800" 
+    stroke-width="2"
+    stroke-dasharray="3,2"
+  />
+  
+  <!-- Legend -->
+  <rect x="120" y="40" width="250" height="40" fill="white" stroke="#ccc" stroke-width="1" rx="5" ry="5" />
+  <rect x="130" y="50" width="15" height="15" fill="#4a6baf" />
+  <text x="150" y="63" font-size="12px">Storage Reduction</text>
+  
+  <circle cx="230" cy="57" r="6" fill="#ff9800" stroke="#fff" stroke-width="1" />
+  <line x1="250" y1="57" x2="280" y2="57" stroke="#ff9800" stroke-width="2" stroke-dasharray="3,2" />
+  <text x="290" y="63" font-size="12px">Throughput</text>
+</svg> 

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="350" viewBox="0 0 500 350">
+  <style>
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 12px;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      fill: #344d85;
+    }
+    .axis-label {
+      font-size: 12px;
+      text-anchor: middle;
+    }
+    .data-label {
+      font-size: 10px;
+      text-anchor: middle;
+      fill: #333;
+    }
+  </style>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="500" height="350" fill="#f8f9fa" rx="10" ry="10" />
+  
+  <!-- Title -->
+  <text x="250" y="30" text-anchor="middle" class="title">Growth of Model Repositories at Hugging Face</text>
+  
+  <!-- Axes -->
+  <line x1="50" y1="280" x2="450" y2="280" stroke="#333" stroke-width="1" />
+  <line x1="50" y1="280" x2="50" y2="50" stroke="#333" stroke-width="1" />
+  
+  <!-- X-axis Labels (Years) -->
+  <text x="100" y="300" text-anchor="middle">2020</text>
+  <text x="190" y="300" text-anchor="middle">2021</text>
+  <text x="280" y="300" text-anchor="middle">2022</text>
+  <text x="370" y="300" text-anchor="middle">2023</text>
+  <text x="450" y="300" text-anchor="middle">2025 (est.)</text>
+  
+  <!-- Y-axis Labels -->
+  <text x="40" y="280" text-anchor="end">0</text>
+  <text x="40" y="230" text-anchor="end">100K</text>
+  <text x="40" y="180" text-anchor="end">500K</text>
+  <text x="40" y="130" text-anchor="end">1M</text>
+  <text x="40" y="80" text-anchor="end">5M</text>
+  
+  <!-- Axis Titles -->
+  <text x="250" y="330" text-anchor="middle" class="axis-label">Year</text>
+  <text x="15" y="165" text-anchor="middle" class="axis-label" transform="rotate(-90, 15, 165)">Number of Models</text>
+  
+  <!-- Model Count Line (Blue) -->
+  <polyline 
+    points="100,270 190,250 280,210 370,150 450,80" 
+    fill="none" 
+    stroke="#4a6baf" 
+    stroke-width="3"
+  />
+  
+  <!-- Data Points for Model Count -->
+  <circle cx="100" cy="270" r="5" fill="#4a6baf" />
+  <circle cx="190" cy="250" r="5" fill="#4a6baf" />
+  <circle cx="280" cy="210" r="5" fill="#4a6baf" />
+  <circle cx="370" cy="150" r="5" fill="#4a6baf" />
+  <circle cx="450" cy="80" r="5" fill="#4a6baf" />
+  
+  <!-- Data Labels for Model Count -->
+  <text x="100" y="260" class="data-label">10K</text>
+  <text x="190" y="240" class="data-label">50K</text>
+  <text x="280" y="200" class="data-label">200K</text>
+  <text x="370" y="140" class="data-label">1.5M</text>
+  <text x="450" y="70" class="data-label">10M+</text>
+  
+  <!-- Storage Size Line (Orange) -->
+  <polyline 
+    points="100,275 190,260 280,230 370,180 450,70" 
+    fill="none" 
+    stroke="#ff9800" 
+    stroke-width="3"
+    stroke-dasharray="5,3"
+  />
+  
+  <!-- Data Points for Storage Size -->
+  <circle cx="100" cy="275" r="5" fill="#ff9800" />
+  <circle cx="190" cy="260" r="5" fill="#ff9800" />
+  <circle cx="280" cy="230" r="5" fill="#ff9800" />
+  <circle cx="370" cy="180" r="5" fill="#ff9800" />
+  <circle cx="450" cy="70" r="5" fill="#ff9800" />
+  
+  <!-- Data Labels for Storage Size -->
+  <text x="100" y="285" class="data-label">0.1 PB</text>
+  <text x="190" y="270" class="data-label">0.5 PB</text>
+  <text x="280" y="240" class="data-label">2 PB</text>
+  <text x="370" y="190" class="data-label">10 PB</text>
+  <text x="450" y="60" class="data-label">1 EB</text>
+  
+  <!-- Legend -->
+  <rect x="300" y="40" width="150" height="50" fill="white" stroke="#ccc" stroke-width="1" rx="5" ry="5" />
+  <line x1="310" y1="55" x2="330" y2="55" stroke="#4a6baf" stroke-width="3" />
+  <circle cx="320" cy="55" r="4" fill="#4a6baf" />
+  <text x="335" y="60" font-size="12px">Model Count</text>
+  
+  <line x1="310" y1="75" x2="330" y2="75" stroke="#ff9800" stroke-width="3" stroke-dasharray="5,3" />
+  <circle cx="320" cy="75" r="4" fill="#ff9800" />
+  <text x="335" y="80" font-size="12px">Storage Volume</text>
+</svg> 

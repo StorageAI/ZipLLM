@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZipLLM: Efficient LLM Storage via Model-Aware Synergistic Data Deduplication and Compression</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ZipLLM</h1>
+            <p class="tagline">Efficient LLM Storage via Model-Aware Synergistic Data Deduplication and Compression</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#abstract">Abstract</a></li>
+                <li><a href="#motivation">Motivation</a></li>
+                <li><a href="#insights">Key Insights</a></li>
+                <li><a href="#bitx">BitX</a></li>
+                <li><a href="#system">ZipLLM System</a></li>
+                <li><a href="#results">Results</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="abstract">
+            <h2>Abstract</h2>
+            <div class="paper-section">
+                <p>
+                    Modern model hubs, such as Hugging Face, store tens of petabytes of LLMs, with fine-tuned variants vastly outnumbering
+                    base models and dominating storage consumption. Existing storage reduction techniques—such as deduplication
+                    and compression—are either LLM-oblivious or not compatible with each other, limiting data reduction effectiveness.
+                </p>
+                <p>
+                    Our large-scale characterization study across all publicly-available Hugging Face LLM repositories reveals several key insights:
+                    (1) fine-tuned models within the same family exhibit highly structured, sparse parameter differences suitable for
+                    delta compression; (2) bitwise similarity enables LLM family clustering; and (3) tensor-level deduplication offers
+                    strong synergy with model-aware compressors.
+                </p>
+                <p>
+                    Building on these insights, we present BitX, an effective, fast, lossless delta compression algorithm that compresses
+                    XORed redundancy between fine-tuned and base LLMs. We build ZipLLM, a model storage reduction pipeline that unifies
+                    tensor-level deduplication and lossless BitX compression. By synergizing deduplication and compression around LLM
+                    family clustering, ZipLLM reduces model storage consumption by 49.5%, over 20% more than state-of-the-art deduplication
+                    and compression designs.
+                </p>
+            </div>
+        </section>
+
+        <section id="motivation">
+            <h2>Motivation</h2>
+            <div class="paper-section">
+                <div class="column">
+                    <h3>Exponential Growth of LLM Storage</h3>
+                    <p>
+                        Large language models (LLMs) have become foundational tools in modern artificial intelligence (AI), with millions
+                        of models now publicly available through model hubs like Hugging Face and TensorFlow Hub.
+                    </p>
+                    <p>
+                        Hugging Face alone hosts over 10 petabytes (PB) of models, with storage volume growing exponentially. By the end
+                        of 2025, projections suggest that total model storage will surpass 1 exabyte (EB)—three orders of magnitude more
+                        than in 2023.
+                    </p>
+                    <p>
+                        Two observations underscore this challenge:
+                    </p>
+                    <ul>
+                        <li>Fine-tuned LLMs vastly outnumber base models and contribute disproportionately to overall storage footprint</li>
+                        <li>LLM storage is dominated by two floating-point formats: BF16 and FP32</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <div class="image-container">
+                        <img src="images/repo_growth.svg" alt="Growth of model repositories at Hugging Face">
+                        <p class="caption">Hugging Face's model count and storage consumption grow at an exponential rate</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights">
+            <h2>Key Insights</h2>
+            <div class="paper-section">
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <i class="fas fa-weight-hanging"></i>
+                    </div>
+                    <div class="insight-content">
+                        <h3>Element-wise weight deltas are small and structured</h3>
+                        <p>
+                            Fine-tuned models derived from the same base exhibit tiny differences, making them highly suitable
+                            for lossless delta compression.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="insight-content">
+                        <h3>Bitwise similarity enables LLM clustering</h3>
+                        <p>
+                            Bit distance, a new metric based on bitwise Hamming distance, serves as a lightweight, robust signal
+                            for grouping LLMs by family, supporting applications like model provenance, duplicate detection, and clustering.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <div class="insight-content">
+                        <h3>Chunk-based deduplication is LLM-oblivious and suboptimal</h3>
+                        <p>
+                            Chunk-level deduplication operates on raw byte streams without LLM structure awareness, resulting in
+                            the loss of crucial information needed for effective model-aware compression. It's also computationally
+                            expensive and scales poorly with storage capacity.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="insight-content">
+                        <h3>Tensor-level deduplication is synergistic with LLM-aware compressors</h3>
+                        <p>
+                            Operating directly at the tensor granularity achieves deduplication ratios comparable to CDC, but with
+                            significantly lower metadata overhead. Meanwhile, it synergistically enables model-aware compressors.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bitx">
+            <h2>BitX: Lossless Delta Compression</h2>
+            <div class="paper-section">
+                <div class="column">
+                    <h3>BitX Compression Algorithm</h3>
+                    <p>
+                        BitX is a highly effective, fast, lossless delta compression algorithm that compresses LLM variants
+                        using XOR-based deltas.
+                    </p>
+                    <p>
+                        Key features:
+                    </p>
+                    <ul>
+                        <li>Operates on the bit level to capture subtle differences between related models</li>
+                        <li>Uses XOR operation to identify exact bit-level changes between models</li>
+                        <li>Applies a generic lossless compression algorithm (zstd) to further reduce storage</li>
+                        <li>Preserves exact bit-level fidelity for model weights</li>
+                    </ul>
+                    <p>
+                        BitX workflow:
+                    </p>
+                    <ol>
+                        <li>Align matching tensors from base and fine-tuned models</li>
+                        <li>Perform bitwise XOR on corresponding values</li>
+                        <li>Compress the resulting bit patterns using zstd</li>
+                        <li>Store reference to base model and compressed delta</li>
+                    </ol>
+                </div>
+                <div class="column">
+                    <div class="image-container">
+                        <img src="images/bitx_workflow.svg" alt="BitX Compression Workflow">
+                        <p class="caption">BitX compression workflow. The example uses BF16, but BitX supports all floating-point types.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="system">
+            <h2>ZipLLM System</h2>
+            <div class="paper-section">
+                <h3>System Architecture</h3>
+                <p>
+                    ZipLLM is a model storage reduction pipeline that synergizes tensor-level deduplication and lossless BitX compression.
+                    It combines multiple strategies to address both exact and approximate redundancy in LLM storage.
+                </p>
+                <div class="image-container full-width">
+                    <img src="images/system_workflow.svg" alt="ZipLLM System Workflow">
+                    <p class="caption">Overview of the ZipLLM storage reduction workflow.</p>
+                </div>
+                
+                <div class="component-container">
+                    <div class="component">
+                        <h4>File Deduplication</h4>
+                        <p>Eliminates exact file duplicates using hash-based comparison.</p>
+                    </div>
+                    
+                    <div class="component">
+                        <h4>Tensor-level Deduplication</h4>
+                        <p>Operates directly at the tensor level, leveraging model structure explicitly exposed in LLM formats.</p>
+                    </div>
+                    
+                    <div class="component">
+                        <h4>LLM Clustering</h4>
+                        <p>Uses bit distance metric to identify model families and group related models.</p>
+                    </div>
+                    
+                    <div class="component">
+                        <h4>BitX Compression</h4>
+                        <p>Compresses XORed redundancy between fine-tuned and base LLMs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="results">
+            <h2>Results</h2>
+            <div class="paper-section">
+                <div class="column">
+                    <h3>Performance Evaluation</h3>
+                    <p>
+                        ZipLLM was evaluated on 1,742 randomly sampled LLMs from Hugging Face, with the following results:
+                    </p>
+                    <ul>
+                        <li>49.5% reduction in storage size</li>
+                        <li>20% higher reduction ratio than state-of-the-art designs</li>
+                        <li>2× higher ingestion throughput</li>
+                    </ul>
+                    <p>
+                        These results demonstrate that ZipLLM significantly outperforms existing solutions while maintaining
+                        lossless compression and high performance.
+                    </p>
+                </div>
+                <div class="column">
+                    <div class="image-container">
+                        <img src="images/compression_summary.svg" alt="Compression results summary">
+                        <p class="caption">ZipLLM achieves both a high data reduction ratio and throughput.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>ZipLLM: Efficient LLM Storage via Model-Aware Synergistic Data Deduplication and Compression</p>
+            <p class="small">Website based on research paper for NSDI '26</p>
+        </div>
+    </footer>
+
+</body>
+</html> 
